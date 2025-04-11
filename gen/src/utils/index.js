@@ -9,7 +9,23 @@ export function getRandomPrompt(prompt){
     return randomPrompt;
 }
 
-
 export async function downloadImage(_id, photo) {
-    FileSaver.saveAs(photo, `download-${_id}.jpg`);
+    let imageUrl = photo;
+    
+    if (photo.includes('cloudinary.com')) {
+        imageUrl = photo.split('?')[0];
+        
+        imageUrl = imageUrl.includes('/upload/') 
+            ? imageUrl.replace('/upload/', '/upload/fl_attachment/')
+            : imageUrl;
+    }
+    
+    try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        
+        FileSaver.saveAs(blob, `download-${_id}.jpg`);
+    } catch (error) {
+        console.error('Error downloading image:', error);
+    }
 }
