@@ -26,7 +26,7 @@ const Home = () => {
 
             try {
                 
-                const response = await fetch('http://localhost:3000/api/v1/post', {
+                const response = await fetch(`${API_URL}/api/v1/post`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
