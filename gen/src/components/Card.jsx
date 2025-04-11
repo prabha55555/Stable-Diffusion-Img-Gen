@@ -3,13 +3,13 @@ import download from '../assets/download.svg';
 import { downloadImage } from '../utils';
 
 const Card = ({_id, name, prompt, photo }) => {
-  // Add debug logging
+  /
   console.log("Rendering card:", { _id, name, prompt, photoUrl: photo });
   const [imageError, setImageError] = useState(false);
   
   // Check if photo URL is valid
   useEffect(() => {
-    if (!photo) setImageError(true);
+    if (!photo) setImageError(false);
   }, [photo]);
   
   return (
