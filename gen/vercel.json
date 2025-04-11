@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://gen-image-backend.vercel.app/api/:path*" 
+      }
+    ]
+  }

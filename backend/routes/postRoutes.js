@@ -6,7 +6,6 @@ dotenv.config();
 
 const router = express.Router();
 
-// Add debug logging
 console.log("Cloudinary Config Values:");
 console.log("CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
 console.log("API_KEY:", process.env.CLOUDINARY_API_KEY);
@@ -29,12 +28,11 @@ router.route('/').get(async(req, res) => {
 
 router.route('/').post(async(req, res) => {
     const { name, prompt, photo } = req.body;
-    
-    // Add more debugging
+   
     console.log("Received post request with:", { name, prompt, photoExists: !!photo });
     
     try {
-        // Log Cloudinary config again here to confirm
+       
         console.log("Cloudinary config before upload:", {
             cloud_name: cloudinary.config().cloud_name ? "Set" : "Missing",
             api_key: cloudinary.config().api_key ? "Set" : "Missing",

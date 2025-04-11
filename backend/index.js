@@ -8,7 +8,7 @@ import huggingRoutes from './routes/huggingRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
 const MONGODB_URL = process.env.MONGODB_URL;
@@ -18,7 +18,11 @@ mongoose.connect(MONGODB_URL)
   .catch((err) => console.log(err));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['https://genimage.vercel.app', 'http://localhost:5173'], // Update with your actual frontend URL
+    methods: ['GET', 'POST'],
+    credentials: true
+  }));
 app.use(express.json({ limit: '50mb' }));
 
 // Routes
