@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import preview from '../assets/preview.png';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
-import { API_URL } from '.';
+import { API_URL } from './index';
 
 const CreatePost = () => {
     const navigate = useNavigate();

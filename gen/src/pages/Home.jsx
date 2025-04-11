@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Loader, Card, FormField } from '../components'
+import { API_URL } from './index'
 
 const RenderCard = ({data, title}) => {
     console.log("RenderCard received data:", data);
