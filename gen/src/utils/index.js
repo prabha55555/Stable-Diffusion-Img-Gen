@@ -1,10 +1,18 @@
 import FileSaver from 'file-saver';
+import { surprisePrompts } from "../constants";
+
+export function getRandomPrompt(prompt) {
+    const randomIndex = Math.floor(Math.random() * surprisePrompts.length);
+    const randomPrompt = surprisePrompts[randomIndex];
+    
+    if (randomPrompt === prompt) return getRandomPrompt(prompt);
+    return randomPrompt;
+}
 
 export async function downloadImage(_id, photo) {
     try {
         console.log("Starting download for image:", photo);
         
-  
         let secureUrl = photo;
         if (secureUrl.startsWith('http:')) {
             secureUrl = secureUrl.replace('http:', 'https:');
@@ -17,7 +25,6 @@ export async function downloadImage(_id, photo) {
             return;
         }
         
-      
         console.log("Using fetch approach for image");
         const response = await fetch(secureUrl);
         
