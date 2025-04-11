@@ -19,7 +19,7 @@ mongoose.connect(MONGODB_URL)
 
 // Middleware
 app.use(cors({
-    origin: ['https://genimage.vercel.app', 'http://localhost:5173'], // Update with your actual frontend URL
+    origin: ['https://genimageb10.vercel.app', 'http://localhost:5173'], 
     methods: ['GET', 'POST'],
     credentials: true
   }));

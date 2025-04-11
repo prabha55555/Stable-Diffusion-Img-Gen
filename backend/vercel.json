@@ -7,9 +7,13 @@
       }
     ],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "index.js"
-      }
-    ]
+        {
+          "src": "/api/(.*)",
+          "dest": "/index.js"
+        },
+        {
+          "src": "/(.*)",
+          "dest": "/index.js"
+        }
+      ]
   }
