@@ -5,9 +5,12 @@ export default defineConfig({
     plugins: [
         react(),
     ],
+    css: {
+        postcss: './postcss.config.js', 
+    },
     server: {
         proxy: {
-                '/api': 'http://localhost:3000',
+            '/api': 'http://localhost:3000',
         },
     },
 });
