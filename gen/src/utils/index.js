@@ -1,18 +1,25 @@
+import FileSaver from 'file-saver';
+
 export async function downloadImage(_id, photo) {
     try {
         console.log("Starting download for image:", photo);
         
+  
+        let secureUrl = photo;
+        if (secureUrl.startsWith('http:')) {
+            secureUrl = secureUrl.replace('http:', 'https:');
+            console.log("Converted to secure URL:", secureUrl);
+        }
         
-        if (photo.includes('cloudinary.com')) {
-           
+        if (secureUrl.includes('cloudinary.com')) {
             console.log("Using direct FileSaver approach for Cloudinary image");
-            FileSaver.saveAs(photo, `download-${_id}.jpg`);
+            FileSaver.saveAs(secureUrl, `download-${_id}.jpg`);
             return;
         }
         
-        
-        console.log("Using fetch approach for non-Cloudinary image");
-        const response = await fetch(photo);
+      
+        console.log("Using fetch approach for image");
+        const response = await fetch(secureUrl);
         
         if (!response.ok) {
             throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
