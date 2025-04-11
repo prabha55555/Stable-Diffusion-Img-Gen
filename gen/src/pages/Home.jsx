@@ -25,7 +25,7 @@ const Home = () => {
             setLoading(true);
 
             try {
-                // CRITICAL FIX: Your backend runs on port 3000, not 8080
+                
                 const response = await fetch('http://localhost:3000/api/v1/post', {
                     method: 'GET',
                     headers: {
@@ -53,7 +53,7 @@ const Home = () => {
         }
         
         fetchPosts();
-    }, []); // CRITICAL FIX: Added empty dependency array to run only once
+    }, []); 
 
     const handleSearchChange = (e) => {
         clearTimeout(searchTimeout);
