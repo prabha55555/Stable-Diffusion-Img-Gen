@@ -54,7 +54,7 @@ const CreatePost = () => {
                 setGeneratingImg(false);
             }
         } else {
-            alert('Please provide proper prompt');
+            alert('Please provide proper prompt ');
         }
     };
 
