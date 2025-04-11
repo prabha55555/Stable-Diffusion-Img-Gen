@@ -19,8 +19,8 @@ mongoose.connect(MONGODB_URL)
 
 // Middleware
 app.use(cors({
-    origin: ['https://genimageb10.vercel.app', 'http://localhost:5173'], 
-    methods: ['GET', 'POST'],
+    origin: ['https://genimageb10.vercel.app', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'OPTIONS'],
     credentials: true
   }));
 app.use(express.json({ limit: '50mb' }));
