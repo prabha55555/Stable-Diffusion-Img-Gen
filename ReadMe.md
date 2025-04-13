@@ -1,4 +1,4 @@
-# AI Image Generator
+# GENIMAGEB10  (AI Image Generator)
 
 Welcome to AI Image Generator, a web application that allows users to generate AI-powered images from text prompts and share them with the community.
 
@@ -81,6 +81,13 @@ Gen Image/
 - MongoDB Atlas account
 - Cloudinary account
 - Hugging Face account with API access
+
+## Clone the Repo
+
+```
+ git clone https://github.com/prabha55555/Stable-Diffusion-Img-Gen.git
+```
+
 
 ### Backend Setup
 1. Navigate to the backend directory:
