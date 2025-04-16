@@ -7,8 +7,8 @@ dotenv.config();
 const router = express.Router();
 
 console.log("Cloudinary Config Values:");
-console.log("CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
-console.log("API_KEY:", process.env.CLOUDINARY_API_KEY);
+console.log("CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME ? "Exists" : "Missing");
+console.log("API_KEY:", process.env.CLOUDINARY_API_KEY ? "Exists" : "Missing");
 console.log("API_SECRET:", process.env.CLOUDINARY_API_SECRET ? "Exists" : "Missing");
 
 cloudinary.config({
