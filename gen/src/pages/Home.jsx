@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Loader, Card, FormField } from '../components'
-import API_URL from '../config'
+import { useEffect, useState } from 'react';
+import { Card, FormField, Loader } from '../components';
+import API_URL from '../config';
 
 const RenderCard = ({ data, title }) => {
     console.log("RenderCard received data:", data);
@@ -22,9 +22,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            setLoading(true);
-
-            try {
+            setLoading(true);            try {
                 const response = await fetch(`${API_URL}/api/v1/post`, {
                     method: 'GET',
                     headers: {
@@ -42,6 +40,7 @@ const Home = () => {
                     console.error("API Error:", response.status);
                     const errorText = await response.text();
                     console.error("Error details:", errorText);
+                    setAllPosts([]);
                 }
             } catch (error) {
                 console.error("Fetch error:", error);
