@@ -3,23 +3,29 @@ import download from '../assets/download.svg';
 import { downloadImage } from '../utils';
 
 const Card = ({_id, name, prompt, photo }) => {
-  
-  console.log("Rendering card:", { _id, name, prompt, photoUrl: photo });
+    console.log("Rendering card:", { _id, name, prompt, photoUrl: photo, photoLength: photo ? photo.length : 0 });
   const [imageError, setImageError] = useState(false);
   
   // Check if photo URL is valid
   useEffect(() => {
-    if (!photo) setImageError(true);
+    if (!photo) {
+      console.error("No photo URL provided");
+      setImageError(true);
+    } else if (photo.startsWith('data:image') && photo.length < 100) {
+      console.error("Photo data is too short to be valid base64:", photo);
+      setImageError(true);
+    }
   }, [photo]);
   
   return (
-    <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card'>
-        <img 
+    <div className='rounded-xl group relative shadow-card hover:shadow-cardhover card'>        <img 
           src={imageError ? 'https://via.placeholder.com/512?text=Image+Not+Found' : photo} 
           alt={prompt} 
           className='w-full h-auto rounded-xl object-cover'
           onError={(e) => {
-            console.error("Image failed to load:", photo);
+            console.error("Image failed to load:", photo?.substring(0, 50) + "...");
+            console.error("Image source type:", typeof photo);
+            console.error("Image source length:", photo?.length || 0);
             setImageError(true);
           }} 
         />

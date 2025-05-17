@@ -11,7 +11,7 @@
           "src": "/api/(.*)",
           "dest": "/index.js",
           "headers": {
-        "Access-Control-Allow-Origin": "https://genimageb10.vercel.app",
+        "Access-Control-Allow-Origin": "https://genimageb10.vercel.app, http://localhost:5174/",
         "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": "true"

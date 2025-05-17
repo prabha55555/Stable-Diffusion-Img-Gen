@@ -9,7 +9,7 @@ const router = express.Router();
 // Create a cache with 1 hour TTL
 const imageCache = new NodeCache({ stdTTL: 3600 });
 
-// Use a smaller, faster model
+// Use Stable Diffusion XL model
 const HUGGING_FACE_API_URL = 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0';
 const ALTERNATIVE_MODEL_URL = 'https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5';
 const FAST_MODEL_URL = 'https://api-inference.huggingface.co/models/CompVis/ldm-text2im-large-256';
@@ -44,7 +44,8 @@ router.post('/', async (req, res) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${HUGGING_FACE_TOKEN}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'image/png' // Explicitly request image response
       },
       data: {
         inputs: prompt,
@@ -66,8 +67,13 @@ router.post('/', async (req, res) => {
     
     console.log('Image generated successfully');
     
-    // Convert image buffer to base64
+      // Convert image buffer to base64
     const base64Image = Buffer.from(response.data).toString('base64');
+    
+    // Log some debug info
+    console.log('Generated image size:', response.data.length, 'bytes');
+    console.log('Base64 image length:', base64Image.length);
+    console.log('Content-Type:', response.headers['content-type']);
     
     // Save to cache
     imageCache.set(cacheKey, base64Image);
@@ -85,13 +91,33 @@ router.post('/', async (req, res) => {
         loading: true
       });
     }
+    
+    // Log more error details to help with debugging
+    if (error.response) {
+      console.log('Error status:', error.response.status);
+      console.log('Error headers:', error.response.headers);
+      
+      // Try to parse the error message if it's in the response data
+      if (error.response.data) {
+        try {
+          if (Buffer.isBuffer(error.response.data)) {
+            const errorText = Buffer.from(error.response.data).toString();
+            console.log('Error data:', errorText);
+          } else {
+            console.log('Error data:', error.response.data);
+          }
+        } catch (parseError) {
+          console.log('Could not parse error data');
+        }
+      }
+    }
 
     const placeholderImage = "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC";
     
     return res.status(200).json({ 
       photo: placeholderImage,
       error: true,
-      message: "Image generation timed out - using placeholder. Try again later."
+      message: "Image generation failed - using placeholder. Error: " + error.message
     });
   }
 });

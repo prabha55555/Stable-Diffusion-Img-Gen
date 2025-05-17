@@ -41,16 +41,37 @@ const CreatePost = () => {
     
                 const data = await response.json();
                 
+                console.log('Image generation response:', {
+                    status: response.status,
+                    hasPhoto: !!data.photo,
+                    photoLength: data.photo ? data.photo.length : 0,
+                    error: data.error,
+                    message: data.message
+                });
+                
                 // Check if the model is still loading
                 if (response.status === 503 && data.loading) {
                     // Wait 5 seconds and try again
+                    alert('The model is still loading. Trying again in 5 seconds...');
                     setTimeout(() => generateImage(), 5000);
                     return;
                 }
                 
-                setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+                // Check if there was an error but we still got a placeholder image
+                if (data.error && data.photo) {
+                    alert(`Warning: ${data.message || 'Image generation had an issue. Using placeholder image.'}`);
+                    setForm({ ...form, photo: `data:image/png;base64,${data.photo}` });
+                    return;
+                }
+                
+                if (!data.photo) {
+                    throw new Error(data.message || 'Failed to generate image');
+                }
+                
+                setForm({ ...form, photo: `data:image/png;base64,${data.photo}` });
             } catch (err) {
-                alert(err);
+                console.error('Image generation error:', err);
+                alert(`Error generating image: ${err.message}`);
             } finally {
                 setGeneratingImg(false);
             }

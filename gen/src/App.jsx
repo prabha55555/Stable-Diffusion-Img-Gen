@@ -1,10 +1,7 @@
-import React from 'react'
-import './index.css';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import download from './assets/download.svg';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import icon from './assets/icon.png';
-import { Home, CreatePost } from './pages';
+import './index.css';
+import { CreatePost, Home } from './pages';
 
 
 const App = () => {
